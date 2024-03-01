@@ -1,5 +1,6 @@
 ﻿using DesafioApi.Database;
 using DesafioApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DesafioApi.Service
 {
