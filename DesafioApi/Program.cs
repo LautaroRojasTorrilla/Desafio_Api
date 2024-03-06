@@ -1,3 +1,7 @@
+using DesafioApi.Database;
+using DesafioApi.Service;
+using Microsoft.EntityFrameworkCore;
+
 namespace DesafioApi
 {
     public class Program
@@ -12,6 +16,13 @@ namespace DesafioApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<UsuarioService>();
+
+            //inyecto la conexión con la base de datos
+            builder.Services.AddDbContext<CoderContext>(options =>
+            {
+                options.UseSqlServer("Server=.;Database=coderhouse;Trusted_Connection=True");
+            });
 
             var app = builder.Build();
 

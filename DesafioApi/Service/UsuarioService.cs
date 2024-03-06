@@ -5,14 +5,17 @@ namespace DesafioApi.Service
 {
     public class UsuarioService
     {
-        public static List<Usuario> ObtenerTodosLosUsuarios()
-        {
-            using (CoderContext contexto = new CoderContext())
-            {
-                List<Usuario> usuarios = contexto.Usuarios.ToList();
 
-                return usuarios;
-            }
+        private CoderContext context;
+
+        public UsuarioService(CoderContext coderContext)
+        {
+            this.context = coderContext;
+        }
+
+        public List<Usuario> ObtenerTodosLosUsuarios()
+        {
+            return this.context.Usuarios.ToList();
         }
 
         public static Usuario ObtenerUsuarioporID(int id)
@@ -26,20 +29,20 @@ namespace DesafioApi.Service
             }
         }
 
-        public static Usuario ObtenerUsuarioporID2(int id)
-        {
-            List<Usuario> usuarios = UsuarioService.ObtenerTodosLosUsuarios();
+        //public static Usuario ObtenerUsuarioporID2(int id)
+        //{
+        //    List<Usuario> usuarios = UsuarioService.ObtenerTodosLosUsuarios();
 
-            foreach (Usuario item in usuarios)
-            {
-                if (item.Id == id)
-                {
-                    return item;
-                }
-            }
+        //    foreach (Usuario item in usuarios)
+        //    {
+        //        if (item.Id == id)
+        //        {
+        //            return item;
+        //        }
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public static bool AgregarUsuario(Usuario usuario)
         {
