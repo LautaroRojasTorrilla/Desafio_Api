@@ -17,6 +17,7 @@ namespace DesafioApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<UsuarioService>();
+            builder.Services.AddScoped<ProductoService>();
 
             //inyecto la conexión con la base de datos
             builder.Services.AddDbContext<CoderContext>(options =>

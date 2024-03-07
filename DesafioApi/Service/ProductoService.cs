@@ -1,24 +1,27 @@
 ﻿using DesafioApi.Database;
+using DesafioApi.DTO;
 using DesafioApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DesafioApi.Service
 {
-    public static class ProductoService
+    public class ProductoService
     {
-        public static List<Producto> ObtenerTodosLosProductos()
+        private CoderContext context;
+
+        public ProductoService(CoderContext coderContext)
+        {
+            this.context = coderContext;
+        }
+
+        public List<Producto> ObtenerTodosLosProductos()
         {
             try
             {
-                using (CoderContext contexto = new CoderContext())
-                {
-                    List<Producto> productos = contexto.Productos.ToList();
-                    return productos;
-                }
+                return this.context.Productos.ToList();
             }
             catch (Exception ex)
             {
-                // Lanzar una nueva excepción para manejar el error en un nivel superior.
                 throw new Exception($"Error al obtener todos los productos: {ex.Message}", ex);
             }
         }
@@ -41,16 +44,23 @@ namespace DesafioApi.Service
             }
         }
 
-        public static bool AgregarProducto(Producto producto)
+        public bool AgregarProducto(ProductoDTO dto)
         {
             try
             {
-                using (CoderContext contexto = new CoderContext())
-                {
-                    contexto.Productos.Add(producto);
-                    contexto.SaveChanges();
-                    return true;
-                }
+                // puedo generar capa de mapper con automapper. 1:02
+                Producto p = new Producto();
+                p.Id = dto.Id;
+                p.Descripciones = dto.Descripciones;
+                p.Costo = dto.Costo;
+                p.PrecioVenta = dto.PrecioVenta;
+                p.Stock = dto.Stock;
+                p.IdUsuario = dto.IdUsuario;
+
+                this.context.Productos.Add(p);
+                context.SaveChanges();
+                return true;
+
             }
             catch (Exception ex)
             {

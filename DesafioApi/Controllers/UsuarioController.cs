@@ -1,4 +1,5 @@
 ﻿using DesafioApi.Database;
+using DesafioApi.DTO;
 using DesafioApi.Models;
 using DesafioApi.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace DesafioApi.Controllers
         [HttpGet("listado")]
         public IActionResult ObtenerListadoDeUsuarios()
         {
-            List<Usuario> usuarios = this.usuarioService.ObtenerTodosLosUsuarios();
+            List <Usuario> usuarios = this.usuarioService.ObtenerTodosLosUsuarios();
 
             if (usuarios != null && usuarios.Any())
             {
@@ -31,7 +32,6 @@ namespace DesafioApi.Controllers
                 return NoContent();
             }
         }
-
 
     }
 }
