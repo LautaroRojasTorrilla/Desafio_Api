@@ -2,6 +2,7 @@
 using DesafioApi.Models;
 using DesafioApi.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace DesafioApi.Controllers
 {
@@ -48,6 +49,24 @@ namespace DesafioApi.Controllers
             {
                 return Conflict(new { mensaje = "No se pudo agregar el producto" });
             }
+        }
+
+        [HttpDelete("{id}")]
+
+        public IActionResult BorrarProducto (int id)
+        {
+            if (id > 0)
+            {
+                if(this.productoService.EliminarProductoPorID(id))
+                {
+                    return Ok(new { mensaje = "Producto eliminado", status = 200 });
+                }
+                else
+                {
+                    return Conflict(new { mensaje = "No se pudo borrar el producto" });
+                }
+            }
+            return BadRequest(new { status = 400, mensaje = "el id no puede ser negativo" });
         }
 
     }

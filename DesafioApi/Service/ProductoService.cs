@@ -94,22 +94,19 @@ namespace DesafioApi.Service
             }
         }
 
-        public static bool EliminarProductoPorID(int Id)
+        public bool EliminarProductoPorID(int id)
         {
             try
             {
-                using (CoderContext contexto = new CoderContext())
+                Producto? producto = this.context.Productos.Where(p => p.Id == id).FirstOrDefault(); 
+                 
+                if (producto is not null)
                 {
-                    Producto productoAEliminar = contexto.Productos
-                        .Include(p => p.ProductoVendidos)
-                        .FirstOrDefault(p => p.Id == Id)
-                        ?? throw new Exception($"No se encontró un producto con ID {Id}");
-
-                    contexto.Productos.Remove(productoAEliminar);
-                    contexto.SaveChanges();
-
+                    this.context.Remove(producto);
+                    this.context.SaveChanges();
                     return true;
                 }
+                return false;
             }
             catch (Exception ex)
             {
