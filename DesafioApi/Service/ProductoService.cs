@@ -1,6 +1,7 @@
 ﻿using DesafioApi.Database;
 using DesafioApi.DTO;
 using DesafioApi.Models;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace DesafioApi.Service
@@ -68,25 +69,26 @@ namespace DesafioApi.Service
             }
         }
 
-        public static bool ModificarProductoPorId(Producto producto, int id)
+        public bool ModificarProductoPorId(int id, ProductoDTO productoDTO)
         {
             try
             {
-                using (CoderContext contexto = new CoderContext())
+                Producto? producto = this.context.Productos.Where(p => p.Id == id).FirstOrDefault();
+
+                if (producto is not null)
                 {
-                    Producto productoBuscado = contexto.Productos.FirstOrDefault(p => p.Id == id)
-                        ?? throw new Exception($"No se encontró un producto con ID {id}");
+                    producto.PrecioVenta = productoDTO.PrecioVenta;
+                    producto.Stock = productoDTO.Stock;
+                    producto.Descripciones = productoDTO.Descripciones;
+                    producto.IdUsuario= productoDTO.IdUsuario;
+                    producto.Costo = productoDTO.Costo;
 
-                    productoBuscado.Descripciones = producto.Descripciones;
-                    productoBuscado.Costo = producto.Costo;
-                    productoBuscado.PrecioVenta = producto.PrecioVenta;
-                    productoBuscado.Stock = producto.Stock;
-
-                    contexto.Productos.Update(productoBuscado);
-                    contexto.SaveChanges();
+                    this.context.Productos.Update(producto);
+                    this.context.SaveChanges();
 
                     return true;
                 }
+                return false;
             }
             catch (Exception ex)
             {

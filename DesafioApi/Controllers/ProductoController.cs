@@ -51,6 +51,22 @@ namespace DesafioApi.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+
+        public IActionResult ModificarProducto(int id, ProductoDTO producto)
+        {
+            if (id > 0)
+            {
+                if(this.productoService.ModificarProductoPorId(id, producto))
+                {
+                    return Ok(new { mensaje = "Producto actualizado", status = 200, producto });
+                }
+                return Conflict(new { mensaje = "No se pudo actualizar el producto" });
+            }
+            return BadRequest(new { status = 400, mensaje = "el id no puede ser negativo" });
+        }
+
+
         [HttpDelete("{id}")]
 
         public IActionResult BorrarProducto (int id)
